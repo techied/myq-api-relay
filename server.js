@@ -15,26 +15,27 @@ const TOKEN = process.env.TOKEN;
 
 const app = express();
 
-app.use('/', async (req, res, next) => {
-  if(req.headers['token'] == TOKEN)
-    next()
-  else
-    next('/')
-})
-
 app.get('/', async (req, res) => {
   res.send('OK');
 })
 
 app.get('/open', async (req, res) => {
-  
-  await setDoor(true);
-  res.send('OK');
+  console.log(req.query);
+  if(req.query.token == TOKEN){
+    await setDoor(true);
+    res.send('opened');
+  } else {
+    res.send('OK');
+  }
 })
 
 app.get('/close', async (req, res) => {
-  await setDoor(false);
-  res.send('OK');
+  if(req.query.token == TOKEN){
+    await setDoor(false);
+    res.send('closed');
+  } else {
+    res.send('OK');
+  }
 })
 
 const setDoor = async (open) => {
