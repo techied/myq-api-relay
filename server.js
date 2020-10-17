@@ -19,13 +19,13 @@ const account = new MyQ();
 app.get('/', (req, res) => {
   account.login(MYQ_EMAIL, MYQ_PASSWORD)
   .then(function(result) {
-    console.log(account.getDevices())
+    res.send((account.getDevices()));
   }).then(function (result) {
     console.log(result);
   }).catch(function (error) {
     console.error(error);
   });
-  res.send('OK');
+  // res.send('OK');
 });
 
 app.get('/open', (req, res) => {
