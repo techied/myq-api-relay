@@ -1,3 +1,3 @@
-# myq-cloud-run
+# MyQ API Relay
 
-basically an API relay for MyQ
+Connects the MyQ API (with myq-api npm module) to a web server so that actions can be taken with token authentication.
