@@ -11,14 +11,23 @@ const account = new MyQ();
 
 const PORT = process.env.PORT;
 const HOST = '0.0.0.0';
+const TOKEN = process.env.TOKEN;
 
 const app = express();
+
+app.use('/', async (req, res, next) => {
+  if(req.headers['token'] == TOKEN)
+    next()
+  else
+    next('/')
+})
 
 app.get('/', async (req, res) => {
   res.send('OK');
 })
 
 app.get('/open', async (req, res) => {
+  
   await setDoor(true);
   res.send('OK');
 })
