@@ -1,56 +1,53 @@
-'use strict';
+const MyQ = require('myq-api');
 
 const express = require('express');
 
-// Constants
-const PORT = process.env.PORT;
-const HOST = '0.0.0.0';
-const MYQ_EMAIL = process.env.MYQ_EMAIL;
-const MYQ_PASSWORD = process.env.MYQ_PASSWORD;
-const MYQ_SERIAL_NUMBER = process.env.MYQ_SERIAL_NUMBER;
+const EMAIL = process.env.MYQ_EMAIL;
+const PASSWORD = process.env.MYQ_PASSWORD;
 
+const SERIALNO1 = process.env.MYQ_SERIAL_NUMBER;
 
-// App
-const app = express();
-const MyQ = require('myq-api');
 const account = new MyQ();
 
+const PORT = process.env.PORT;
+const HOST = '0.0.0.0';
 
-app.get('/', (req, res) => {
-  account.login(MYQ_EMAIL, MYQ_PASSWORD)
-  .then(function(result) {
-    res.send((account.getDevices()));
-  }).then(function (result) {
-    console.log(result);
-  }).catch(function (error) {
-    console.error(error);
-  });
-  // res.send('OK');
-});
+const app = express();
 
-app.get('/open', (req, res) => {
-  account.login(MYQ_EMAIL, MYQ_PASSWORD)
-  .then(function(result) {
-    return account.setDoorState(MYQ_SERIAL_NUMBER, MyQ.actions.door.OPEN)
-  }).then(function (result) {
-    console.log(result);
-  }).catch(function (error) {
-    console.error(error);
-  });
+app.get('/', async (req, res) => {
   res.send('OK');
 })
 
-app.get('/close', (req, res) => {
-  account.login(MYQ_EMAIL, MYQ_PASSWORD)
-  .then(function(result) {
-    return account.setDoorState(MYQ_SERIAL_NUMBER, MyQ.actions.door.CLOSE)
-  }).then(function (result) {
-    console.log(result);
-  }).catch(function (error) {
-    console.error(error);
-  });
+app.get('/open', async (req, res) => {
+  await setDoor(true);
   res.send('OK');
 })
+
+app.get('/close', async (req, res) => {
+  await setDoor(false);
+  res.send('OK');
+})
+
+const setDoor = async (open) => {
+  await account
+  .login(EMAIL, PASSWORD)
+  .then((loginResult) => {
+    console.log('Login result:');
+    console.log(JSON.stringify(loginResult, null, 2));
+    console.log(`Short-lived security token: '${loginResult.securityToken}'`);
+    if(open) {
+      account.setDoorState(SERIALNO1, MyQ.actions.door.OPEN);
+    } else {
+      account.setDoorState(SERIALNO1, MyQ.actions.door.CLOSE);
+    }
+  })
+  .catch((error) => {
+    console.error('Error received:');
+    console.error(error);
+    console.error(`Error code: ${error.code}`);
+    console.error(`Error message: ${error.message}`);
+  });
+}
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);

@@ -1,14 +1,14 @@
 {
-    "name": "myq-cloud-run",
-    "version": "1.0.0",
-    "description": "MyQ API Gateway on GCP Cloud Run",
-    "author": "",
-    "main": "server.js",
-    "scripts": {
-      "start": "node server.js"
-    },
-    "dependencies": {
-      "myq-api": "2.0.2",
-      "express": "^4.16.1"
-    }
+  "name": "myq-cloud-run",
+  "version": "1.0.0",
+  "description": "MyQ API Gateway on GCP Cloud Run",
+  "author": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "myq-api": "2.0.2",
+    "express": "^4.16.1"
   }
+}
