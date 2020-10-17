@@ -5,7 +5,7 @@ const express = require('express');
 const EMAIL = process.env.MYQ_EMAIL;
 const PASSWORD = process.env.MYQ_PASSWORD;
 
-const SERIALNO1 = process.env.MYQ_SERIAL_NUMBER;
+const SERIAL_NUMBER = process.env.MYQ_SERIAL_NUMBER;
 
 const account = new MyQ();
 
@@ -46,9 +46,9 @@ const setDoor = async (open) => {
     console.log(JSON.stringify(loginResult, null, 2));
     console.log(`Short-lived security token: '${loginResult.securityToken}'`);
     if(open) {
-      account.setDoorState(SERIALNO1, MyQ.actions.door.OPEN);
+      account.setDoorState(SERIAL_NUMBER, MyQ.actions.door.OPEN);
     } else {
-      account.setDoorState(SERIALNO1, MyQ.actions.door.CLOSE);
+      account.setDoorState(SERIAL_NUMBER, MyQ.actions.door.CLOSE);
     }
   })
   .catch((error) => {
